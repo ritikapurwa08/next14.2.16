@@ -50,7 +50,7 @@ export default function CustomTextarea<T extends FieldValues>({
 
   return (
     <FormItem className="relative">
-      <FormLabel className="text-sm -mb-2 font-medium text-muted-foreground block">
+      <FormLabel className="text-sm  font-medium mb-0.5 ml-2 mt-1 block">
         {label}
       </FormLabel>
 
@@ -70,7 +70,7 @@ export default function CustomTextarea<T extends FieldValues>({
             rows={rows}
             maxLength={maxLength}
             className={cn(
-              "resize-none pr-10 rounded-none border-zinc-500",
+              "resize-none pr-10 rounded-xl border-opacity-30 border-zinc-500",
               !!Icon && "pl-10",
               className
             )}

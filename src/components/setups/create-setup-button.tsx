@@ -26,10 +26,30 @@ import SubmitLoader from "../loaders/submit-loader";
 
 const CreateSetupButton = () => {
   const { user } = UseGetCurrentUser();
-  console.log("user:", user);
-
   const { mutate: createSetup, isPending: creatingSetup } = UseCreateSetup();
   const [open, setOpen] = useState(false);
+
+  const [showSetupDescription, setShowSetupDescription] = useState(false);
+  const [showThumnailInput, setShowThumnailInput] = useState(false);
+  const [showCodeSetupDesction, setShowCodeSetupDesction] = useState(false);
+  const [showCodeSetupLinks, setShowCodeSetupLinks] = useState(false);
+
+  const handleShowSetupDescription = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowSetupDescription((prev) => !prev);
+  };
+  const handleShowThumnailInput = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowThumnailInput((prev) => !prev);
+  };
+  const handleShowCodeSetupDesction = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowCodeSetupDesction((prev) => !prev);
+  };
+  const handleShowCodeSetupLinks = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setShowCodeSetupLinks((prev) => !prev);
+  };
 
   const form = useForm<SetupZodSchemaType>({
     resolver: zodResolver(setupZodSchema),
@@ -57,8 +77,6 @@ const CreateSetupButton = () => {
     name: "setupCodeSteps",
   });
 
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-
   const handleCreateSetup = (values: SetupZodSchemaType) => {
     console.log("Form values on submit", values);
     createSetup(
@@ -77,7 +95,6 @@ const CreateSetupButton = () => {
           console.log("Setup created successfully", data);
           setOpen(false);
           form.reset();
-          setCurrentStepIndex(0);
         },
         onError(err) {
           console.log("error creating setup", err);
@@ -88,48 +105,20 @@ const CreateSetupButton = () => {
       }
     );
   };
-
   const handleCloseDialog = () => {
-    console.log("Close dialog and reset the values");
     setOpen(false);
     form.reset();
-    setCurrentStepIndex(0);
-  };
-  const handleNextStep = () => {
-    if (currentStepIndex < fields.length) {
-      console.log("next step and index will increase by 1");
-      setCurrentStepIndex(currentStepIndex + 1);
-    }
-  };
-  const handlePreviousStep = () => {
-    if (currentStepIndex > 0) {
-      console.log("previous step and index will decrease by 1");
-      setCurrentStepIndex(currentStepIndex - 1);
-    }
   };
 
   const handleRemoveStep = (index: number) => {
     remove(index);
-    if (currentStepIndex >= fields.length - 1 && currentStepIndex > 0) {
-      setCurrentStepIndex(currentStepIndex - 1);
-    } else if (
-      currentStepIndex >= fields.length - 1 &&
-      currentStepIndex === 0
-    ) {
-      setCurrentStepIndex(0);
-    } else {
-      setCurrentStepIndex(currentStepIndex);
-    }
-    console.log("remove step and index ", index);
   };
-
-  const isLastStep = currentStepIndex === fields.length;
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">Create Setup</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className=" max-h-[80%]  overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Create a New Setup</DialogTitle>
           <DialogDescription>
@@ -139,48 +128,67 @@ const CreateSetupButton = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleCreateSetup)}>
             <div className="space-y-4">
-              {currentStepIndex === 0 && (
-                <>
-                  <CustomInput
-                    control={form.control}
-                    name="setupTitle"
-                    label="Setup Title"
-                    disabled={creatingSetup}
-                    placeholder="Enter title for the setup"
-                  />
-                  <CustomTextarea
-                    control={form.control}
-                    name="setupDescription"
-                    label="Setup Description"
-                    placeholder="Describe your setup"
-                  />
-                  <CustomInput
-                    control={form.control}
-                    name="setupThumbnail"
-                    label="Thumbnail"
-                    disabled={creatingSetup}
-                    placeholder="Add thumbnail for setup"
-                  />
+              <div className="">
+                <CustomInput
+                  control={form.control}
+                  name="setupTitle"
+                  label="Setup Title"
+                  disabled={creatingSetup}
+                  placeholder="Enter title for the setup"
+                />
+              </div>
 
-                  <Button
-                    disabled={creatingSetup}
-                    onClick={handleNextStep}
-                    variant={"secondary"}
-                    type="button"
-                  >
-                    Next Step
-                  </Button>
-                </>
+              <div className="flex flex-row gap-x-2">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleShowThumnailInput}
+                  className="h-10 w-fit px-4 text-sm"
+                  asChild
+                >
+                  <p>
+                    {showThumnailInput ? "Hide Thumbnail" : "Add Thumbnail"}
+                  </p>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleShowSetupDescription}
+                  asChild
+                >
+                  <p>
+                    {showSetupDescription
+                      ? "Hide Description"
+                      : "Show Description"}
+                  </p>
+                </Button>
+              </div>
+
+              {showSetupDescription && (
+                <CustomTextarea
+                  control={form.control}
+                  name="setupDescription"
+                  label="Setup Description"
+                  placeholder="Describe your setup"
+                />
               )}
+              {showThumnailInput && (
+                <CustomInput
+                  control={form.control}
+                  name="setupThumbnail"
+                  label="Thumbnail URL"
+                  disabled={creatingSetup}
+                  placeholder="Add thumbnail URL"
+                />
+              )}
+
               {fields.map((field, index) => {
                 return (
-                  <div
-                    className={cn(currentStepIndex !== index + 1 && "hidden")}
-                    key={field.id}
-                  >
+                  <div key={field.id}>
                     <h1 className="text-xl text-slate-600 font-bold mb-2">
                       Step : {index + 1}
                     </h1>
+
                     <CustomInput
                       control={form.control}
                       name={`setupCodeSteps.${index}.codeTitle`}
@@ -190,90 +198,97 @@ const CreateSetupButton = () => {
                     />
                     <CustomTextarea
                       control={form.control}
-                      name={`setupCodeSteps.${index}.codeDescription`}
-                      label="Step Description"
-                      disabled={creatingSetup}
-                      placeholder={`Enter Step Description ${index + 1}`}
-                    />
-                    <CustomTextarea
-                      control={form.control}
                       name={`setupCodeSteps.${index}.codeFile`}
                       label="Code"
                       disabled={creatingSetup}
                       placeholder={`Enter Code For Step ${index + 1}`}
                     />
 
+                    <div>
+                      <div className="flex flex-row my-2 gap-x-2">
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={handleShowCodeSetupDesction}
+                          type="button"
+                        >
+                          {showCodeSetupDesction
+                            ? "Hide Description"
+                            : "Show Description"}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={handleShowCodeSetupLinks}
+                          type="button"
+                        >
+                          {showCodeSetupLinks
+                            ? "Hide CodeLinks"
+                            : "Show CodeLinks"}
+                        </Button>
+                      </div>
+                    </div>
+
+                    <div>
+                      {showCodeSetupDesction && (
+                        <CustomTextarea
+                          control={form.control}
+                          name={`setupCodeSteps.${index}.codeDescription`}
+                          label="Step Description"
+                          disabled={creatingSetup}
+                          placeholder={`Enter Step Description ${index + 1}`}
+                        />
+                      )}
+                      {showCodeSetupLinks && (
+                        <CustomInput
+                          control={form.control}
+                          name={`setupCodeSteps.${index}.codeLinks`}
+                          label="Link"
+                          disabled={creatingSetup}
+                          placeholder={`Enter Link For Step ${index + 1}`}
+                        />
+                      )}
+                    </div>
+
                     <div className="flex gap-3 mt-3">
-                      <Button
-                        variant={"secondary"}
-                        onClick={handlePreviousStep}
-                        disabled={creatingSetup}
-                        type="button"
-                      >
-                        Previous
-                      </Button>
                       <Button
                         variant={"destructive"}
                         onClick={() => handleRemoveStep(index)}
+                        type="button"
                       >
                         Remove
                         <TrashIcon className="ml-2 h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant={"secondary"}
-                        onClick={handleNextStep}
-                        type="button"
-                        disabled={creatingSetup}
-                      >
-                        Next Step
                       </Button>
                     </div>
                   </div>
                 );
               })}
-              {isLastStep && (
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Button
-                      variant="secondary"
-                      onClick={() => {
-                        append({
-                          codeFile: "",
-                          codeDescription: "",
-                          codeTitle: "",
-                          codeLinks: [],
-                        });
-                      }}
-                    >
-                      Add New Steps
-                      <PlusIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                  <div className="mt-3">
-                    <SubmitLoader
-                      defaultText="Create Snippets"
-                      loadingIcon={LoaderIcon}
-                      loadingState={creatingSetup}
-                      loadingText="Creating Snippets"
-                    />
-                  </div>
-                </div>
-              )}
-              <div className="flex gap-2 mt-4">
-                {fields.map((_, index) => (
+              <div>
+                <div className="flex items-center justify-between">
                   <Button
-                    key={index}
-                    variant={
-                      index + 1 === currentStepIndex || index === 0
-                        ? "default"
-                        : "secondary"
-                    }
-                    onClick={() => setCurrentStepIndex(index + 1)}
+                    variant="secondary"
+                    onClick={() => {
+                      append({
+                        codeFile: "",
+                        codeDescription: "",
+                        codeTitle: "",
+                        codeLinks: [],
+                      });
+                    }}
                     type="button"
                   >
-                    {index + 1}
+                    Add Step
+                    <PlusIcon className="ml-2 h-4 w-4" />
                   </Button>
-                ))}
+                </div>
+                <div className="mt-3">
+                  <SubmitLoader
+                    defaultText="Create Snippets"
+                    loadingIcon={LoaderIcon}
+                    loadingState={creatingSetup}
+                    loadingText="Creating Snippets"
+                  />
+                </div>
               </div>
             </div>
           </form>

@@ -48,7 +48,7 @@ export default function CustomInput<T extends FieldValues>({
     <FormItem className="relative">
       <FormLabel
         htmlFor={`${name}-input`}
-        className={"text-sm   -mb-2 font-medium text-muted-foreground  block"}
+        className={"text-sm   mb-0.5 ml-2 font-medium  block"}
       >
         {label}
       </FormLabel>

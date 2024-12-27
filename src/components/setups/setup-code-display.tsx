@@ -45,7 +45,7 @@ const SetupCodeDisplay: React.FC<SetupCodeDisplayProps> = ({ codeFile }) => {
   };
 
   return (
-    <div className={`relative container w-full p-0`}>
+    <div className={`relative h-auto container w-full p-0`}>
       <CopyToClipboard text={codeFile} onCopy={handleCopy}>
         <Button
           size={"sm"}

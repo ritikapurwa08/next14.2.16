@@ -44,12 +44,12 @@ const SetupsLayout = ({ children }: SetupsLayoutProps) => {
         </div>
         {/* Right Side:  Filter and Create Setup button */}
         <div className="flex items-center space-x-2">
-          <Hint side="left" label="filter setups">
+          <Hint side="bottom" label="filter setups">
             <Button variant="outline" size="icon" onClick={handleFilterToggle}>
               <Filter className="h-5 w-5" />
             </Button>
           </Hint>
-          <Hint side="left" label="create setup">
+          <Hint side="bottom" label="create setup">
             <div>
               <CreateSetupButton />
             </div>
