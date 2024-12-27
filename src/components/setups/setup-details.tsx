@@ -44,7 +44,7 @@ const SetupDetail: React.FC<SetupDetailProps> = ({ id }) => {
             {step.codeDescription && (
               <p className="text-gray-600 mb-2">{step.codeDescription}</p>
             )}
-            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto whitespace-pre-wrap">
+            <pre className=" p-4 rounded-md overflow-x-auto whitespace-pre-wrap">
               <SetupCodeDisplay codeFile={step.codeFile} />
             </pre>
           </div>

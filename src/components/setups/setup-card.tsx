@@ -39,7 +39,7 @@ const SetupCard: React.FC<SetupCardType> = ({
 
   return (
     <div className="setup-card border rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out flex flex-col">
-      <Link href={`/setup/${_id}`} className="block">
+      <Link href={`/setups/${_id}`} className="block">
         <div className="thumbnail h-48 w-full overflow-hidden relative">
           <Image
             src={logo}
@@ -51,7 +51,7 @@ const SetupCard: React.FC<SetupCardType> = ({
       </Link>
       <div className="p-4 flex flex-col h-[150px] justify-between flex-grow">
         <div>
-          <Link href={`/setup/${_id}`} className="block">
+          <Link href={`/setups/${_id}`} className="block">
             <h2 className="text-xl font-bold mb-2 line-clamp-2 hover:text-blue-500 transition-colors duration-300">
               {setupTitle}
             </h2>

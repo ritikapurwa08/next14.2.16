@@ -27,7 +27,7 @@ const SetupShowCasePage = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 grid-cols-3 mx-auto w-full gap-4">
+    <div className="flex flex-row flex-wrap">
       {setups.map((item) => (
         <SetupCard
           _id={item._id}

@@ -30,15 +30,19 @@ const SetupCodeDisplay: React.FC<SetupCodeDisplayProps> = ({ codeFile }) => {
           {!copied && "Copy"}
         </Button>
       </CopyToClipboard>
-      <SyntaxHighlighter
-        customStyle={{
-          backgroundColor: "#1e1e1e",
-        }}
-        language="typescript"
-        style={oneDark}
-      >
-        {codeFile}
-      </SyntaxHighlighter>
+      <div className="relative h-fit container">
+        <div className="absolute h- ">
+          <SyntaxHighlighter
+            customStyle={{
+              backgroundColor: "#1e1e1e",
+            }}
+            language="typescript"
+            style={oneDark}
+          >
+            {codeFile}
+          </SyntaxHighlighter>
+        </div>
+      </div>
     </div>
   );
 };
