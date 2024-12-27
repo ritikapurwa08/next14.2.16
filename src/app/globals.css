@@ -108,3 +108,8 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: darkred; /* The hover color */
 }
+
+
+.uiLogoShadow {
+  box-shadow: -10px 12px 8px 4px rgba(90, 173, 67, 0.2);
+}
