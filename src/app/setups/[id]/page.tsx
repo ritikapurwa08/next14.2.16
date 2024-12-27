@@ -20,7 +20,11 @@ const SetupDetailPage = ({ params }: Params) => {
   if (!params.id) {
     return notFound();
   }
-  return <SetupDetail id={params.id} />;
+  return (
+    <div className="w-full p-6 container">
+      <SetupDetail id={params.id} />
+    </div>
+  );
 };
 
 export default SetupDetailPage;

@@ -1,5 +1,4 @@
-// components/setups/setup-code-display.tsx
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -12,77 +11,59 @@ interface SetupCodeDisplayProps {
 
 const SetupCodeDisplay: React.FC<SetupCodeDisplayProps> = ({ codeFile }) => {
   const [copied, setCopied] = useState(false);
-  const [codeHeight, setCodeHeight] = useState<number | "auto">("auto");
-  const codeDivRef = useRef<HTMLDivElement>(null);
-  const highlighterRef = useRef<HTMLElement>(null);
 
   const handleCopy = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const calculateHeight = useCallback(() => {
-    if (highlighterRef.current) {
-      const height = highlighterRef.current.offsetHeight;
-      setCodeHeight(height);
-    }
-  }, []);
+  const customStyle = {
+    // other styles for the container, if any
+    maxHeight: "400px",
 
-  useEffect(() => {
-    calculateHeight();
-  }, [codeFile, calculateHeight]);
-
-  const scrollbarStyles = {
     "::-webkit-scrollbar": {
-      width: "8px",
-      height: "8px",
+      width: "10px",
+      backgroundColor: "#282c34",
+      borderRadius: "10px",
+      // A dark background, matching oneDark
+    },
+
+    "::-webkit-scrollbar-thumb": {
+      background: "#526376", // A lighter grey/blue
+      borderRadius: "5px",
+    },
+
+    "::-webkit-scrollbar-thumb:hover": {
+      background: "#738090",
     },
     "::-webkit-scrollbar-track": {
-      background: "transparent",
+      backgroundColor: "#282c34",
     },
-    "::-webkit-scrollbar-thumb": {
-      backgroundColor: "red",
-      borderRadius: "4px",
-    },
-    "::-webkit-scrollbar-thumb:hover": {
-      backgroundColor: "darkred",
-    },
+    //Standardized scrollbar properties for some other browsers
+    "scrollbar-width": "thin",
+    "scrollbar-color": "#526376 #282c34",
   };
 
   return (
-    <div className="relative">
+    <div className={`relative container w-full p-0`}>
       <CopyToClipboard text={codeFile} onCopy={handleCopy}>
         <Button
           size={"sm"}
           variant={"outline"}
-          className="absolute top-2 right-2 z-10"
+          className="absolute top-4 right-4 z-10"
         >
-          {copied ? "Copied!" : <Copy className="h-4 w-4 mr-2" />}
+          {copied ? "Copied!" : <Copy className="h-4 w-4 mr-1" />}
           {!copied && "Copy"}
         </Button>
       </CopyToClipboard>
-      <div
-        className="container relative"
-        style={{ ...scrollbarStyles, height: codeHeight }}
-      >
-        <div
-          id="code-div"
-          className="overflow-auto"
-          ref={codeDivRef}
-          style={{ ...scrollbarStyles, height: codeHeight }}
+      <div className="w-full container ">
+        <SyntaxHighlighter
+          customStyle={customStyle}
+          language="typescript"
+          style={oneDark}
         >
-          <SyntaxHighlighter
-            customStyle={{
-              backgroundColor: "#1e1e1e",
-              ...scrollbarStyles,
-            }}
-            language="typescript"
-            style={oneDark}
-            onAfterRender={calculateHeight}
-          >
-            {codeFile}
-          </SyntaxHighlighter>
-        </div>
+          {codeFile}
+        </SyntaxHighlighter>
       </div>
     </div>
   );

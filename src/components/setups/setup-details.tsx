@@ -25,7 +25,7 @@ const SetupDetail: React.FC<SetupDetailProps> = ({ id }) => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-4">
+    <div className=" w-full  p-6 space-y-4">
       <Link href="/setups">
         <Button variant={"ghost"}>
           <ArrowLeft className="h-4 w-4 mr-2" /> Back to Setups
@@ -37,16 +37,16 @@ const SetupDetail: React.FC<SetupDetailProps> = ({ id }) => {
       )}
       {setup.setupCodeSteps &&
         setup.setupCodeSteps.map((step, index) => (
-          <div key={index} className="mb-6 border rounded-md p-4">
+          <div key={index} className="mb-6 border  rounded-md p-4">
             <h2 className="text-xl font-semibold mb-2">
               Step {index + 1}: {step.codeTitle}
             </h2>
             {step.codeDescription && (
               <p className="text-gray-600 mb-2">{step.codeDescription}</p>
             )}
-            <pre className=" p-4 rounded-md overflow-x-auto whitespace-pre-wrap">
+            <div className=" p-4 w-full rounded-md overflow-x-auto whitespace-pre-wrap">
               <SetupCodeDisplay codeFile={step.codeFile} />
-            </pre>
+            </div>
           </div>
         ))}
     </div>

@@ -86,3 +86,25 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Basic styling for the scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Style for the scrollbar track (the background behind the thumb) */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: red; /* or any track color */
+}
+
+/* Style for the scrollbar thumb (the draggable part) */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: red; /* The base color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Style for the scrollbar thumb on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: darkred; /* The hover color */
+}

@@ -17,11 +17,8 @@ const SetupCard: React.FC<SetupCardType> = ({
   _id,
   setupLikes,
   likedBy,
-  setupThumbnail,
   setupUserName,
-  setupUserEmail,
   setupDescription,
-  setupCodeSteps,
 }) => {
   const formattedUpdateTime = setupUpdatedAt
     ? formatDistance(parseISO(setupUpdatedAt), new Date(), {
@@ -40,12 +37,13 @@ const SetupCard: React.FC<SetupCardType> = ({
   return (
     <div className="setup-card border rounded-lg shadow-md hover:shadow-lg transition duration-300 ease-in-out flex flex-col">
       <Link href={`/setups/${_id}`} className="block">
-        <div className="thumbnail h-48 w-full overflow-hidden relative">
+        <div className=" h-auto w-full overflow-hidden p-4 max-h-40  relative">
           <Image
             src={logo}
             alt={`${setupTitle} Thumbnail`}
-            className="rounded-t-lg object-cover"
-            fill
+            className="rounded-t-lg h-full aspect-video  w-auto object-cover"
+            height={150}
+            width={150}
           />
         </div>
       </Link>
@@ -69,7 +67,7 @@ const SetupCard: React.FC<SetupCardType> = ({
                 ? `Updated ${formattedUpdateTime}`
                 : `Created ${formattedCreationTime}`}
             </p>
-            <p className="text-gray-600 text-xs">by {setupUserEmail}</p>
+            <p className="text-gray-600 text-xs">by {setupUserName}</p>
           </div>
           <div className="flex items-center space-x-2">
             {/*  Like Button*/}

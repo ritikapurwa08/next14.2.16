@@ -2,6 +2,7 @@
 import { getAuthUserId } from "@convex-dev/auth/server";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { paginationOptsValidator } from "convex/server";
 
 export const createSetup = mutation({
   args: {
@@ -45,16 +46,6 @@ export const createSetup = mutation({
       setupDescription: args.setupDescription,
     });
     return setupId;
-  },
-});
-
-export const getSetupById = query({
-  args: {
-    id: v.id("setups"),
-  },
-  handler: async (ctx, args) => {
-    const setup = await ctx.db.get(args.id);
-    return setup;
   },
 });
 
@@ -104,24 +95,6 @@ export const updateSetup = mutation({
   },
 });
 
-export const getAllSetups = query({
-  args: {}, // No arguments needed to get all setups
-  handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    // Example: Check if a user is logged in.
-    // you can comment the user check if you want to show public data
-    if (!userId) {
-      throw new Error("User not authenticated");
-    }
-
-    // Fetch all setups.
-    const setups = await ctx.db.query("setups").collect();
-
-    return setups;
-  },
-});
-
 export const deleteSetup = mutation({
   args: {
     id: v.id("setups"),
@@ -140,6 +113,37 @@ export const deleteSetup = mutation({
     await ctx.db.delete(args.id);
 
     return args.id;
+  },
+});
+
+export const getSetupById = query({
+  args: {
+    id: v.id("setups"),
+  },
+  handler: async (ctx, args) => {
+    const setup = await ctx.db.get(args.id);
+    return setup;
+  },
+});
+
+export const getAllSetups = query({
+  args: {
+    paginationOpts: paginationOptsValidator,
+  },
+  handler: async (ctx, args) => {
+    const userId = await getAuthUserId(ctx);
+
+    // Example: Check if a user is logged in.
+    // you can comment the user check if you want to show public data
+    if (!userId) {
+      throw new Error("User not authenticated");
+    }
+    const results = await ctx.db
+      .query("setups")
+      .order("desc")
+      .paginate(args.paginationOpts);
+
+    return results;
   },
 });
 
@@ -183,5 +187,27 @@ export const incrementLike = mutation({
     }
 
     return args.id;
+  },
+});
+
+export const getCustomSetups = query({
+  args: {
+    searchQuery: v.optional(v.string()),
+    filterByUserName: v.optional(v.string()),
+    filterByUserEmail: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const userIdentity = await getAuthUserId(ctx);
+    if (!userIdentity) {
+      return { page: [] };
+    }
+
+    const SearchUserName = await ctx.db
+      .query("setups")
+      .withIndex("byTitle", (q) =>
+        q.eq("setupTitle", args.filterByUserName ?? "")
+      )
+      .order("desc")
+      .collect();
   },
 });

@@ -21,8 +21,14 @@ const Schema = defineSchema({
         codeLinks: v.array(v.string()),
       })
     ),
-    likedBy: v.optional(v.array(v.string())), // Add the likedBy field here
-  }),
+    likedBy: v.optional(v.array(v.string())),
+  })
+    .index("byLikes", ["setupLikes"]) // Index for sorting by likes
+    .index("byTitle", ["setupTitle"]) // Index for searching by title
+    .index("byUser", ["setupUserName"]) // Index for filtering by user name
+    .index("byEmail", ["setupUserEmail"])
+    .index("byCode", ["setupCodeSteps"]),
+  // Index for filtering by user email
 });
 
 export default Schema;

@@ -1,7 +1,6 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-
 import {
   Tooltip,
   TooltipContent,
@@ -25,11 +24,20 @@ export const Hint = ({
     <TooltipProvider>
       <Tooltip delayDuration={50}>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-
         <TooltipContent
           side={side}
           align={align}
-          className="border border-white/5 bg-black text-white"
+          className={`
+            z-50
+            rounded-md
+            border
+            bg-white
+            text-gray-800
+            shadow-md
+            transition-opacity
+            duration-200
+             dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:shadow-gray-900
+        `}
         >
           <p className="text-xs font-medium">{label}</p>
         </TooltipContent>
