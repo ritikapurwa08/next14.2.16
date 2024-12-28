@@ -31,18 +31,6 @@ const NavbarLg = () => {
       name: "Setups",
       href: "/setups",
     },
-    {
-      name: "Works",
-      href: "/works",
-    },
-    {
-      name: "Comments",
-      href: "/comments",
-    },
-    {
-      name: "About",
-      href: "/about",
-    },
   ];
 
   const handleMobileMenuToggle = () => {
