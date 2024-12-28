@@ -4,8 +4,8 @@ import Link from "next/link";
 
 const Hero = () => {
   return (
-    <div>
-      <div className="prose prose-2xl mx-auto text-center  ">
+    <div className="py-28">
+      <div className="prose prose-2xl dark:prose-invert  mx-auto text-center  ">
         <h1 className=" text-4xl font-semibold">
           Oragnize, Share & Collaborate with ease.
         </h1>
@@ -14,7 +14,7 @@ const Hero = () => {
           , Eccormerse Apps, and much more.
         </p>
       </div>
-      <div className="mx-auto w-fit flex flex-row gap-x-2">
+      <div className="mx-auto w-fit flex py-6 flex-row gap-x-2">
         <Button type="button" variant="outline">
           <Link href="/admin">Be Admin</Link>
         </Button>

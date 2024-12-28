@@ -62,9 +62,9 @@ export default function RootLayout({
               enableSystem
               disableTransitionOnChange
             >
-              <main className="max-w-7xl mx-auto">
+              <main className="">
                 <NavbarLg />
-                <div className="p-2 container mx-auto">{children}</div>
+                <div className="p-2 ">{children}</div>
               </main>
             </ThemeProvider>
           </ConvexClientProvider>
